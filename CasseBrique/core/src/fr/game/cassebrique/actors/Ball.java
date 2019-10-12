@@ -29,7 +29,7 @@ public class Ball {
         this.y = raquette.y + (texture.getHeight() / 2);
         speed = 15;
         zone = new Circle(x, y, (texture.getHeight()/2));
-        angle = (Math.PI)/4; // angle initial de la trajectoire
+        angle = (Math.PI)/3; // angle initial de la trajectoire
         directionRight = true;
         directionUp = true;
         
@@ -45,51 +45,78 @@ public class Ball {
             
             collisionX();
             collisionY();
-
+            
             collisionRaquette(raquette);
             trajectory(directionRight, directionUp);
         }
         
     }
-
+    
     private void collisionRaquette(Raquette raquette) {
-
-        boolean collision = Intersector.overlaps(zone, raquette.zone);
-
+        
+        boolean collision = Intersector.overlaps(zone, raquette.zoneCenter);
+        
         if (collision) {
-
+            
             directionUp = true;
+            angle = Math.PI / 3;
         }
+        
+        boolean collisionLeft = Intersector.overlaps(zone, raquette.zoneLeft);
+        boolean collisionRight = Intersector.overlaps(zone, raquette.zoneRight);
+        
+        if (collisionLeft || collisionRight) {
+            
+            Circle zoneTest = new Circle(x, y + 1, (texture.getHeight()/2));
+            
+            if (!Intersector.overlaps(zoneTest, raquette.zoneRight) || !Intersector.overlaps(zoneTest, raquette.zoneLeft)) {
+                
+                directionUp = true;
+                angle = Math.PI / 6;
+            } 
+            else {
 
+                directionUp = false;
+
+                if (collisionLeft) {
+                    directionRight = false;
+                }
+                else {
+                    directionRight = true;
+                }
+            }
+
+        }
+        
     }
-
+    
     private void trajectory(boolean directionX, boolean directionY) {
-
+        
         Float modifX;
-
+        
         if (directionX) {
-
+            
             modifX = x + speed * (float)Math.cos(angle);
             this.x = modifX;
             zone.x = modifX;
         }
         else {
-
+            
             modifX = x - speed * (float)Math.cos(angle);
             this.x = modifX;
             zone.x = modifX;
         }
-
+        
         Float modifY;
-
+        
         if (directionY) {
-
+            
             modifY = y + speed * (float)Math.sin(angle);
             this.y = modifY;
             zone.y = modifY;
         }
         else {
-
+            
             modifY = y - speed * (float)Math.sin(angle);
             this.y = modifY;
             zone.y = modifY;
@@ -100,41 +127,40 @@ public class Ball {
     
     
     private void collisionY() {
-
+        
         int limitY = Gdx.graphics.getHeight() - this.texture.getHeight();
-
+        
         if (limitY < y) {
-
+            
             y = (float)limitY;
             directionUp = false;
             
         } else if (y < 0.0f) {
-
+            
             y = 0.0f;
             directionUp = true;
-
+            
             // Rajouter la perte de vie ici (collision avec le bas de l'ecran)
         }
     }
-
+    
     private void collisionX() {
-
+        
         int limitX = Gdx.graphics.getWidth() - this.texture.getWidth();
-
+        
         if (limitX < x) {
-
+            
             x = (float)limitX;
             directionRight = false;
             
         } else if (x < 0.0f) {
-
+            
             x = 0.0f;
             directionRight = true;          
         }
     }
-
+    
     public void render(SpriteBatch batch) {
-        
         
         batch.begin();
         batch.draw(texture, x, y);
