@@ -30,7 +30,7 @@ public class GameScreen implements Screen {
                 listLevels.generate();
                 raquette = new Raquette();
                 ball = new Ball(raquette);
-               
+                
         }
         
         
@@ -38,17 +38,17 @@ public class GameScreen implements Screen {
         public void render(float delta) {
                 
                 clearScreen();
-                listLevels.getLevel(1).render(batch);
                 raquette.move();
-                raquette.render(batch);
                 gameStart = ball.startGame(gameStart);
                 ball.updatePosition(raquette, gameStart);
+                listLevels.getLevel(2).render(batch);
+                raquette.render(batch);
                 ball.render(batch);
                 
                 
         }
-
-
+        
+        
         
         
         private void clearScreen() {

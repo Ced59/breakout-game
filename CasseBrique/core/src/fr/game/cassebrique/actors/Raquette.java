@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Raquette {
     
@@ -11,6 +12,7 @@ public class Raquette {
     Float y;
     Texture texture;
     int speed;
+    Rectangle zone;
     
     public Raquette() {
         
@@ -18,6 +20,7 @@ public class Raquette {
         this.x = (float)(Gdx.graphics.getWidth() / 2) - (texture.getWidth() / 2);
         this.y = 50.0f;
         this.speed = 20;
+        zone = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
                 
     }
     
@@ -67,8 +70,18 @@ public class Raquette {
             x += speed;
             borderCollision();
         }
+
+        updateZone();
     }
     
+    
+    private void updateZone() {
+
+        zone.x = x;
+        zone.y = y;
+    }
+
+
     
     public void borderCollision() {
         
