@@ -42,7 +42,9 @@ public class GameScreen implements Screen {
                 raquette.move();
                 raquette.render(batch);
                 ball.updatePosition(raquette, gameStart);
+                gameStart = ball.startGame(gameStart);
                 ball.render(batch);
+                
                 
         }
 

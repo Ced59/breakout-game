@@ -1,5 +1,8 @@
 package fr.game.cassebrique.actors;
 
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
@@ -43,4 +46,16 @@ public class Ball {
             batch.end();
         
     }
+
+	public boolean startGame(boolean gameStart) {
+
+        if (!gameStart) {
+            if (Gdx.input.isKeyJustPressed(Keys.ENTER) || Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+
+                gameStart = true;
+            }
+        }
+
+		return gameStart;
+	}
 }
