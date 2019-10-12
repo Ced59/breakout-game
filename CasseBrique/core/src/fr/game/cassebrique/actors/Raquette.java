@@ -12,7 +12,9 @@ public class Raquette {
     Float y;
     Texture texture;
     int speed;
-    Rectangle zone;
+    Rectangle zoneLeft;
+    Rectangle zoneRight;
+    Rectangle zoneCenter;
     
     public Raquette() {
         
@@ -20,8 +22,9 @@ public class Raquette {
         this.x = (float)(Gdx.graphics.getWidth() / 2) - (texture.getWidth() / 2);
         this.y = 50.0f;
         this.speed = 20;
-        zone = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
-                
+        zoneLeft = new Rectangle(x, y, texture.getWidth() / 3, texture.getHeight());
+        zoneCenter = new Rectangle((x + texture.getWidth() / 3), y, texture.getWidth() / 3, texture.getHeight());
+        zoneRight = new Rectangle((x + texture.getWidth() / 3 * 2), y, texture.getWidth() / 3, texture.getHeight());
     }
     
     
@@ -77,12 +80,20 @@ public class Raquette {
     
     private void updateZone() {
 
-        zone.x = x;
-        zone.y = y;
+        zoneLeft.x = x;
+        zoneLeft.y = y;
+
+        zoneCenter.x = x + texture.getWidth() / 3;
+        zoneCenter.y = y;
+
+        zoneRight.x = x + texture.getWidth() / 3 * 2;
+        zoneCenter.y = y;
+
+
     }
 
 
-    
+
     public void borderCollision() {
         
         int limitX = Gdx.graphics.getWidth() - this.texture.getWidth();
