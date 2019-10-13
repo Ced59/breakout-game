@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
-
 import fr.game.cassebrique.actors.briques.Brique;
 import fr.game.cassebrique.actors.levels.Level;
 import fr.game.cassebrique.actors.levels.ressources.Row;
@@ -33,7 +31,7 @@ public class Ball {
         this.x = raquette.x - (texture.getWidth() / 2);
         this.y = raquette.y + (texture.getHeight() / 2);
         speed = 15;
-        zone = new Circle(x, y, (texture.getHeight()/2));
+        zone = new Circle(x, y, (texture.getHeight()/2 + 1));
         angle = (Math.PI)/3; // angle initial de la trajectoire
         directionRight = true;
         directionUp = true;

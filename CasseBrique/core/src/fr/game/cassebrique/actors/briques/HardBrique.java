@@ -45,5 +45,14 @@ public class HardBrique extends Brique {
 
         this.power -=1;
         super.setDisplayedWhenCollide(this.power);
+
+
+        //changement de texture 
+        if (this.power == 2) {
+            this.texture = new Texture("textures/texture-medium-brique.jpg");
+        }
+        if (this.power == 1) {
+            this.texture = new Texture("textures/texture-basic-brique.jpg");
+        }
 	}
 }

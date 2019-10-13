@@ -40,8 +40,8 @@ public class GameScreen implements Screen {
                 clearScreen();
                 raquette.move();
                 gameStart = ball.startGame(gameStart);
-                ball.updatePosition(raquette, gameStart, listLevels.getLevel(3));
-                listLevels.getLevel(3).render(batch);
+                ball.updatePosition(raquette, gameStart, listLevels.getLevel(4));
+                listLevels.getLevel(4).render(batch);
                 raquette.render(batch);
                 ball.render(batch);
                 

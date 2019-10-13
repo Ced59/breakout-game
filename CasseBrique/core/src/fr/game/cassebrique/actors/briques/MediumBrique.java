@@ -44,5 +44,9 @@ public class MediumBrique extends Brique {
 
         this.power -=1;
         super.setDisplayedWhenCollide(this.power);
+
+        if (this.power == 1) {
+            this.texture = new Texture("textures/texture-basic-brique.jpg");
+        }
 	}
 }
