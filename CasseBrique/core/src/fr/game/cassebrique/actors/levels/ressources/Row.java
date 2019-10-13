@@ -58,6 +58,11 @@ public class Row {
         }
     }
 
+    public Brique[] getRowBriques() {
+
+        return rowBriques;
+    }
+
 
     // fin de la zone de refactorisation
 

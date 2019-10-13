@@ -17,6 +17,12 @@ public class HardBrique extends Brique {
         texture = new Texture("textures/texture-hard-brique.jpg");
         zone = new Rectangle(x, y , texture.getWidth(), texture.getHeight());
         power = 3;
+
+        testCollisionBottomBrique = new Rectangle(x, y + 10, zone.getWidth(), zone.getHeight());
+        testCollisionUpBrique = new Rectangle(x, y - 10, zone.getWidth(), zone.getHeight());
+        testCollisionLeftBrique = new Rectangle(x + 10, y, zone.getWidth(), zone.getHeight());
+        testCollisionRightBrique = new Rectangle(x, y - 10, zone.getWidth(), zone.getHeight());
+        
     } 
 
     public void render(SpriteBatch batch) {
@@ -29,4 +35,15 @@ public class HardBrique extends Brique {
         }
         
     }
+
+    public Rectangle getZone() {
+
+        return zone;
+    }
+
+    public void setDisplayedWhenCollide() {
+
+        this.power -=1;
+        super.setDisplayedWhenCollide(this.power);
+	}
 }

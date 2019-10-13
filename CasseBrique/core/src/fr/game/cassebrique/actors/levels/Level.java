@@ -71,4 +71,9 @@ public class Level {
         batch.end();
         
     }
+
+    public Row[] getLvlRows() {
+
+        return lvlRows;
+    }
 }

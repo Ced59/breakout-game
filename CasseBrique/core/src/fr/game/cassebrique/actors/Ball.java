@@ -6,6 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
+
+import fr.game.cassebrique.actors.briques.Brique;
+import fr.game.cassebrique.actors.levels.Level;
+import fr.game.cassebrique.actors.levels.ressources.Row;
 
 
 
@@ -35,7 +40,7 @@ public class Ball {
         
     }
     
-    public void updatePosition(Raquette raquette, boolean gameStart) {
+    public void updatePosition(Raquette raquette, boolean gameStart, Level lvl) {
         
         if (!gameStart) {
             this.x = raquette.x + (raquette.texture.getWidth() / 2) - (this.texture.getWidth() / 2);
@@ -45,13 +50,56 @@ public class Ball {
             
             collisionX();
             collisionY();
-            
+            collisionBrique(lvl);
             collisionRaquette(raquette);
             trajectory(directionRight, directionUp);
         }
         
     }
     
+    private void collisionBrique(Level lvl) {
+
+        for (Row row : lvl.getLvlRows()) {
+            
+            for (Brique brique : row.getRowBriques()) {
+                
+                boolean collision = Intersector.overlaps(zone, brique.getZone());
+
+                if (collision) {
+
+                   //On teste le coté de la brique entré en collision pour déterminer la nouvelle direction de la balle (en testant une collision avec un nouveau rectangle fictif décalé)
+
+                    if (!Intersector.overlaps(zone, brique.getTestCollisionBottomBrique())) {
+
+                        directionUp = false;
+                    }
+
+                    if (!Intersector.overlaps(zone, brique.getTestCollisionUpBrique())) {
+
+                        directionUp = true;
+                    }
+
+                    if (!Intersector.overlaps(zone, brique.getTestCollisionLeftBrique())) {
+
+                        directionRight = true;
+                    }
+
+                    if (!Intersector.overlaps(zone, brique.getTestCollisionRightBrique())) {
+
+                        directionRight = false;
+                    }
+
+                    
+
+                    brique.setDisplayedWhenCollide();
+                    
+
+                }
+            }
+
+        }
+    }
+
     private void collisionRaquette(Raquette raquette) {
         
         boolean collision = Intersector.overlaps(zone, raquette.zoneCenter);

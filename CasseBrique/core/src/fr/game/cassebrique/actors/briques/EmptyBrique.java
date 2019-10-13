@@ -1,7 +1,7 @@
 package fr.game.cassebrique.actors.briques;
 
 
-public class EmptyBrique {
+public class EmptyBrique extends Brique {
 
     private float x;
     private float y;
@@ -10,15 +10,15 @@ public class EmptyBrique {
     
     
     public EmptyBrique(float x, float y) {
-        this.x = x;
-        this.y = y;
+        
+        super(x, y);
         this.widght = 50;
         
     }
 
     public EmptyBrique(float x, float y, float widght) {
-        this.x = x;
-        this.y = y;
+
+        super(x, y);
         this.widght = widght;
     }
 
