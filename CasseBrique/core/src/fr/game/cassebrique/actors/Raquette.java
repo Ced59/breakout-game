@@ -12,9 +12,12 @@ public class Raquette {
     Float y;
     Texture texture;
     int speed;
-    Rectangle zoneLeft;
-    Rectangle zoneRight;
-    Rectangle zoneCenter;
+    Rectangle zone;
+    boolean right;
+    boolean left;
+    boolean leftSlow;
+    boolean rightSlow;
+    
     
     public Raquette() {
         
@@ -22,57 +25,111 @@ public class Raquette {
         this.x = (float)(Gdx.graphics.getWidth() / 2) - (texture.getWidth() / 2);
         this.y = 50.0f;
         this.speed = 20;
-        zoneLeft = new Rectangle(x, y, texture.getWidth() / 3, texture.getHeight());
-        zoneCenter = new Rectangle((x + texture.getWidth() / 3), y, texture.getWidth() / 3, texture.getHeight());
-        zoneRight = new Rectangle((x + texture.getWidth() / 3 * 2), y, texture.getWidth() / 3, texture.getHeight());
+        zone = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        right = false;
+        left = false;
+        leftSlow = false;
+        rightSlow = false;
+        
     }
     
     
     public void move() {
         
-        boolean left = false;
+        int speedSlow;
+        
         if (Gdx.input.isKeyJustPressed(Keys.Q) || Gdx.input.isKeyJustPressed(Keys.LEFT)){
             
             x -= speed/3;
             borderCollision();
             
         }
-        else {
-            
-            if (Gdx.input.isKeyPressed(Keys.Q) || Gdx.input.isKeyPressed(Keys.LEFT)){
+        if ((Gdx.input.isKeyPressed(Keys.Q) && (Gdx.input.isKeyPressed(Keys.SPACE)) || Gdx.input.isKeyPressed(Keys.LEFT)) && (Gdx.input.isKeyPressed(Keys.SPACE))){
                 
-                left = true;
-            }
+            left = true;
+            leftSlow = true;
+        }
+        else {
+
+            left = false;
+            leftSlow = false;
+        }
+
+        if (Gdx.input.isKeyPressed(Keys.Q) || Gdx.input.isKeyPressed(Keys.LEFT)){
+                
+            left = true;
+        }
+        else {
+
+            left = false;
+         
         }
         
         
-        boolean right = false;
+        
         if (Gdx.input.isKeyJustPressed(Keys.D) || Gdx.input.isKeyJustPressed(Keys.RIGHT)){
             
-            x += speed/3;
+            speedSlow = speed / 2;
+            x += speed;
             borderCollision();
             
         }
-        else {
-            if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)){
+
+        if ((Gdx.input.isKeyPressed(Keys.D) && (Gdx.input.isKeyPressed(Keys.SPACE)) || Gdx.input.isKeyPressed(Keys.RIGHT)) && (Gdx.input.isKeyPressed(Keys.SPACE))){
                 
-                right = true;
-            }
+            right = true;
+            rightSlow = true;
+        }
+        else {
+
+            right = false;
+            rightSlow = false;
+        }
+
+        if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)){
+                
+            right = true;
+        }
+        
+        else {
             
+            right = false;
         }
         
         
         if (left){
             
-            x -= speed;
+            if (leftSlow) {
+
+                speedSlow = speed / 2;
+                x -= speedSlow;
+            }
+
+            else {
+
+                x -= speed;
+            }
+
             borderCollision();
         }
         
         if (right){
             
-            x += speed;
+            
+            if (rightSlow){
+
+                speedSlow = speed / 2;
+                x += speedSlow;
+            }
+            else {
+
+                x += speed;
+            }
+
+
             borderCollision();
         }
+
 
         updateZone();
     }
@@ -80,15 +137,8 @@ public class Raquette {
     
     private void updateZone() {
 
-        zoneLeft.x = x;
-        zoneLeft.y = y;
-
-        zoneCenter.x = x + texture.getWidth() / 3;
-        zoneCenter.y = y;
-
-        zoneRight.x = x + texture.getWidth() / 3 * 2;
-        zoneCenter.y = y;
-
+        zone.x = x;
+        zone.y = y;
 
     }
 
@@ -114,6 +164,38 @@ public class Raquette {
         batch.begin();
         batch.draw(texture, x, y);
         batch.end();
+    }
+
+    public boolean getMove() {
+
+        boolean move;
+
+        if (right || left) {
+            
+            move = true;
+        }
+        else {
+
+            move = false;
+        }
+
+        return move;
+    }
+
+    public boolean getSlowMove() {
+
+        boolean slowMove;
+
+        if (rightSlow || leftSlow) {
+            
+            slowMove = true;
+        }
+        else {
+
+            slowMove = false;
+        }
+
+        return slowMove;
     }
     
 }
