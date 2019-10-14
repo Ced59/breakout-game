@@ -86,8 +86,7 @@ public class Ball {
 
                         directionRight = true;
                     }
-
-                    
+  
 
                     brique.setDisplayedWhenCollide();
                     
@@ -99,39 +98,26 @@ public class Ball {
 
     private void collisionRaquette(Raquette raquette) {
         
-        boolean collision = Intersector.overlaps(zone, raquette.zoneCenter);
+        boolean collision = Intersector.overlaps(zone, raquette.zone);
         
         if (collision) {
             
-            directionUp = true;
             angle = Math.PI / 3;
-        }
-        
-        boolean collisionLeft = Intersector.overlaps(zone, raquette.zoneLeft);
-        boolean collisionRight = Intersector.overlaps(zone, raquette.zoneRight);
-        
-        if (collisionLeft || collisionRight) {
-            
-            Circle zoneTest = new Circle(x, y + 1, (texture.getHeight()/2));
-            
-            if (!Intersector.overlaps(zoneTest, raquette.zoneRight) || !Intersector.overlaps(zoneTest, raquette.zoneLeft)) {
-                
-                directionUp = true;
+
+            if (raquette.getSlowMove()) {
+
+                angle = Math.PI / 4;
+            }
+            if (raquette.getMove()) {
+
                 angle = Math.PI / 6;
-            } 
-            else {
-
-                directionUp = false;
-
-                if (collisionLeft) {
-                    directionRight = false;
-                }
-                else {
-                    directionRight = true;
-                }
             }
 
+            directionUp = true;
+            
         }
+        
+       
         
     }
     
