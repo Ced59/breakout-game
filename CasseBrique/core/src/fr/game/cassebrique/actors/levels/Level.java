@@ -1,6 +1,10 @@
 package fr.game.cassebrique.actors.levels;
+
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import fr.game.cassebrique.actors.Player;
+import fr.game.cassebrique.actors.briques.Brique;
 import fr.game.cassebrique.actors.levels.ressources.Row;
 
 
@@ -75,5 +79,28 @@ public class Level {
     public Row[] getLvlRows() {
 
         return lvlRows;
+    }
+
+    public boolean testWin(Player player) {
+
+        boolean win = true;
+
+        for (Row row : this.lvlRows) {
+            
+            for (Brique brique : row.getRowBriques()) {
+                
+                if (brique.getDisplayed()) {
+
+                    win = false;
+                }
+            }
+        }
+
+        if (win) {
+
+            player.passLvl();
+        }
+
+        return win;
     }
 }

@@ -39,6 +39,11 @@ public class Brique {
         return zone;
     }
 
+    public boolean getDisplayed() {
+
+        return displayed;
+    }
+
 	public void setDisplayedWhenCollide(int power) {
 
         if (power == 0) {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fr.game.cassebrique.actors.Ball;
+import fr.game.cassebrique.actors.Player;
 import fr.game.cassebrique.actors.Raquette;
 import fr.game.cassebrique.actors.levels.ListLevels;
 
@@ -19,17 +20,22 @@ public class GameScreen implements Screen {
         Raquette raquette;
         Ball ball;
         boolean gameStart;
+        boolean gameTestWin;
+        int lvl;
+        Player player;
         
         
         
         public GameScreen(MyCasseBrique game){
                 this.game = game;
                 gameStart = false;
+                gameTestWin = false;
                 batch = new SpriteBatch();
                 listLevels = new ListLevels();
                 listLevels.generate();
                 raquette = new Raquette();
                 ball = new Ball(raquette);
+                player = new Player();
                 
         }
         
@@ -40,10 +46,16 @@ public class GameScreen implements Screen {
                 clearScreen();
                 raquette.move();
                 gameStart = ball.startGame(gameStart);
-                ball.updatePosition(raquette, gameStart, listLevels.getLevel(4));
-                listLevels.getLevel(4).render(batch);
+                ball.updatePosition(raquette, gameStart, listLevels.getLevel(player.getLvl()));
+                listLevels.getLevel(player.getLvl()).render(batch);
                 raquette.render(batch);
                 ball.render(batch);
+                gameTestWin = !listLevels.getLevel(player.getLvl()).testWin(player);
+
+                if (!gameTestWin) {
+
+                        gameStart = false;
+                }
                 
                 
         }
