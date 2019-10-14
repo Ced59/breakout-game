@@ -1,17 +1,28 @@
 package fr.game.cassebrique.actors;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import fr.game.cassebrique.actors.briques.Brique;
+import fr.game.cassebrique.actors.levels.Level;
+import fr.game.cassebrique.actors.levels.ressources.Row;
+
+
+
 
 public class Ball {
     
     Float x;
     Float y;
-    Float angle;
+    double angle;
     Texture texture;
     int speed;
-    Circle circle;
+    Circle zone;
+    boolean directionRight;
+    boolean directionUp;
     
     
     public Ball(Raquette raquette) {
@@ -19,28 +30,198 @@ public class Ball {
         texture = new Texture("textures/BallGolfTextureOK.png");
         this.x = raquette.x - (texture.getWidth() / 2);
         this.y = raquette.y + (texture.getHeight() / 2);
-        speed = 30;
-        circle = new Circle(x, y, (texture.getWidth() / 2));
+        speed = 15;
+        zone = new Circle(x, y, (texture.getHeight()/2 + 1));
+        angle = (Math.PI)/3; // angle initial de la trajectoire
+        directionRight = true;
+        directionUp = true;
         
     }
     
-    public void updatePosition(Raquette raquette, boolean gameStart) {
-
+    public void updatePosition(Raquette raquette, boolean gameStart, Level lvl) {
+        
         if (!gameStart) {
-            this.x = raquette.x + (raquette.texture.getWidth() / 2) - (texture.getWidth() / 2);
+            this.x = raquette.x + (raquette.texture.getWidth() / 2) - (this.texture.getWidth() / 2);
             this.y = raquette.y + (raquette.texture.getHeight());
         }
+        else {
             
+            collisionX();
+            collisionY();
+            collisionBrique(lvl);
+            collisionRaquette(raquette);
+            trajectory(directionRight, directionUp);
+        }
+        
+    }
+    
+    private void collisionBrique(Level lvl) {
 
+        for (Row row : lvl.getLvlRows()) {
+            
+            for (Brique brique : row.getRowBriques()) {
+                
+                boolean collision = Intersector.overlaps(zone, brique.getZone());
+
+                if (collision) {
+
+                   //On teste le coté de la brique entré en collision pour déterminer la nouvelle direction de la balle (en testant une collision avec un nouveau rectangle fictif décalé)
+
+                    if (Intersector.overlaps(zone, brique.getTestCollisionBottomBrique())) {
+
+                        directionUp = false;
+                    }
+
+                    if (Intersector.overlaps(zone, brique.getTestCollisionUpBrique())) {
+
+                        directionUp = true;
+                    }
+
+                    if (Intersector.overlaps(zone, brique.getTestCollisionLeftBrique())) {
+
+                        directionRight = false;
+                    }
+
+                    if (Intersector.overlaps(zone, brique.getTestCollisionRightBrique())) {
+
+                        directionRight = true;
+                    }
+
+                    
+
+                    brique.setDisplayedWhenCollide();
+                    
+                }
+            }
+
+        }
     }
 
+    private void collisionRaquette(Raquette raquette) {
+        
+        boolean collision = Intersector.overlaps(zone, raquette.zoneCenter);
+        
+        if (collision) {
+            
+            directionUp = true;
+            angle = Math.PI / 3;
+        }
+        
+        boolean collisionLeft = Intersector.overlaps(zone, raquette.zoneLeft);
+        boolean collisionRight = Intersector.overlaps(zone, raquette.zoneRight);
+        
+        if (collisionLeft || collisionRight) {
+            
+            Circle zoneTest = new Circle(x, y + 1, (texture.getHeight()/2));
+            
+            if (!Intersector.overlaps(zoneTest, raquette.zoneRight) || !Intersector.overlaps(zoneTest, raquette.zoneLeft)) {
+                
+                directionUp = true;
+                angle = Math.PI / 6;
+            } 
+            else {
 
+                directionUp = false;
+
+                if (collisionLeft) {
+                    directionRight = false;
+                }
+                else {
+                    directionRight = true;
+                }
+            }
+
+        }
+        
+    }
+    
+    private void trajectory(boolean directionX, boolean directionY) {
+        
+        Float modifX;
+        
+        if (directionX) {
+            
+            modifX = x + speed * (float)Math.cos(angle);
+            this.x = modifX;
+            zone.x = modifX;
+        }
+        else {
+            
+            modifX = x - speed * (float)Math.cos(angle);
+            this.x = modifX;
+            zone.x = modifX;
+        }
+        
+        Float modifY;
+        
+        if (directionY) {
+            
+            modifY = y + speed * (float)Math.sin(angle);
+            this.y = modifY;
+            zone.y = modifY;
+        }
+        else {
+            
+            modifY = y - speed * (float)Math.sin(angle);
+            this.y = modifY;
+            zone.y = modifY;
+        }
+        
+        
+    }
+    
+    
+    private void collisionY() {
+        
+        int limitY = Gdx.graphics.getHeight() - this.texture.getHeight();
+        
+        if (limitY < y) {
+            
+            y = (float)limitY;
+            directionUp = false;
+            
+        } else if (y < 0.0f) {
+            
+            y = 0.0f;
+            directionUp = true;
+            
+            // Rajouter la perte de vie ici (collision avec le bas de l'ecran)
+        }
+    }
+    
+    private void collisionX() {
+        
+        int limitX = Gdx.graphics.getWidth() - this.texture.getWidth();
+        
+        if (limitX < x) {
+            
+            x = (float)limitX;
+            directionRight = false;
+            
+        } else if (x < 0.0f) {
+            
+            x = 0.0f;
+            directionRight = true;          
+        }
+    }
+    
     public void render(SpriteBatch batch) {
         
+        batch.begin();
+        batch.draw(texture, x, y);
+        batch.end();
         
-            batch.begin();
-            batch.draw(texture, x, y);
-            batch.end();
+    }
+    
+    public boolean startGame(boolean gameStart) {
         
+        if (!gameStart) {
+            if (Gdx.input.isKeyJustPressed(Keys.ENTER) || Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+                
+                gameStart = true;
+            }
+        }
+        
+        return gameStart;
     }
 }

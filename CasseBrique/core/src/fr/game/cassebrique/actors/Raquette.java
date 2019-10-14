@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Raquette {
     
@@ -11,6 +12,9 @@ public class Raquette {
     Float y;
     Texture texture;
     int speed;
+    Rectangle zoneLeft;
+    Rectangle zoneRight;
+    Rectangle zoneCenter;
     
     public Raquette() {
         
@@ -18,7 +22,9 @@ public class Raquette {
         this.x = (float)(Gdx.graphics.getWidth() / 2) - (texture.getWidth() / 2);
         this.y = 50.0f;
         this.speed = 20;
-                
+        zoneLeft = new Rectangle(x, y, texture.getWidth() / 3, texture.getHeight());
+        zoneCenter = new Rectangle((x + texture.getWidth() / 3), y, texture.getWidth() / 3, texture.getHeight());
+        zoneRight = new Rectangle((x + texture.getWidth() / 3 * 2), y, texture.getWidth() / 3, texture.getHeight());
     }
     
     
@@ -67,9 +73,27 @@ public class Raquette {
             x += speed;
             borderCollision();
         }
+
+        updateZone();
     }
     
     
+    private void updateZone() {
+
+        zoneLeft.x = x;
+        zoneLeft.y = y;
+
+        zoneCenter.x = x + texture.getWidth() / 3;
+        zoneCenter.y = y;
+
+        zoneRight.x = x + texture.getWidth() / 3 * 2;
+        zoneCenter.y = y;
+
+
+    }
+
+
+
     public void borderCollision() {
         
         int limitX = Gdx.graphics.getWidth() - this.texture.getWidth();

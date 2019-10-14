@@ -18,6 +18,11 @@ public class BasicBrique extends Brique {
         texture = new Texture("textures/texture-basic-brique.jpg");
         zone = new Rectangle(x, y , texture.getWidth(), texture.getHeight());
         power = 1;
+
+        testCollisionBottomBrique = new Rectangle(x, y - zone.getHeight(), zone.getWidth(), zone.getHeight());
+        testCollisionUpBrique = new Rectangle(x, y + zone.getHeight(), zone.getWidth(), zone.getHeight());
+        testCollisionLeftBrique = new Rectangle(x - zone.getHeight(), y, zone.getHeight(), zone.getHeight());
+        testCollisionRightBrique = new Rectangle(x + zone.getWidth(), y, zone.getHeight(), zone.getHeight());
     } 
     
     public void render(SpriteBatch batch) {
@@ -30,4 +35,15 @@ public class BasicBrique extends Brique {
         }
         
     }
+
+    public Rectangle getZone() {
+
+        return zone;
+    }
+
+    public void setDisplayedWhenCollide() {
+
+        this.power -=1;
+        super.setDisplayedWhenCollide(this.power);
+	}
 }
