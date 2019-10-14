@@ -21,6 +21,7 @@ public class GameScreen implements Screen {
         Ball ball;
         boolean gameStart;
         boolean gameTestWin;
+        boolean gameTestLostLife;
         int lvl;
         Player player;
         
@@ -30,6 +31,7 @@ public class GameScreen implements Screen {
                 this.game = game;
                 gameStart = false;
                 gameTestWin = false;
+                gameTestLostLife = false;
                 batch = new SpriteBatch();
                 listLevels = new ListLevels();
                 listLevels.generate();
@@ -54,6 +56,12 @@ public class GameScreen implements Screen {
 
                 if (!gameTestWin) {
 
+                        gameStart = false;
+                }
+
+                if (ball.getCollisionBottom()) {
+
+                        player.lifeLost();
                         gameStart = false;
                 }
                 
