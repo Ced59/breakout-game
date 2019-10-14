@@ -45,6 +45,7 @@ public class Ball {
         if (!gameStart) {
             this.x = raquette.x + (raquette.texture.getWidth() / 2) - (this.texture.getWidth() / 2);
             this.y = raquette.y + (raquette.texture.getHeight());
+            collisionBottom = false;
         }
         else {
             
@@ -171,11 +172,12 @@ public class Ball {
             
         } else if (y < 0.0f) {
             
-            y = 0.0f;
+            
             directionUp = true;
             
             // Rajouter la perte de vie ici (collision avec le bas de l'ecran)
             collisionBottom = true;
+            
         }
 
         return collisionBottom;

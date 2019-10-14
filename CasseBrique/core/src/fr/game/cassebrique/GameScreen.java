@@ -52,6 +52,7 @@ public class GameScreen implements Screen {
                 listLevels.getLevel(player.getLvl()).render(batch);
                 raquette.render(batch);
                 ball.render(batch);
+                player.render(batch);
                 gameTestWin = !listLevels.getLevel(player.getLvl()).testWin(player);
 
                 if (!gameTestWin) {
@@ -59,10 +60,14 @@ public class GameScreen implements Screen {
                         gameStart = false;
                 }
 
-                if (ball.getCollisionBottom()) {
+                gameTestLostLife = ball.getCollisionBottom();
+
+                if (gameTestLostLife) {
 
                         player.lifeLost();
                         gameStart = false;
+                        gameTestLostLife = false;
+
                 }
                 
                 
