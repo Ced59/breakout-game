@@ -23,6 +23,7 @@ public class Ball {
     Circle zone;
     boolean directionRight;
     boolean directionUp;
+    boolean collisionBottom;
     
     
     public Ball(Raquette raquette) {
@@ -35,6 +36,7 @@ public class Ball {
         angle = (Math.PI)/3; // angle initial de la trajectoire
         directionRight = true;
         directionUp = true;
+        collisionBottom = false;
         
     }
     
@@ -43,11 +45,12 @@ public class Ball {
         if (!gameStart) {
             this.x = raquette.x + (raquette.texture.getWidth() / 2) - (this.texture.getWidth() / 2);
             this.y = raquette.y + (raquette.texture.getHeight());
+            collisionBottom = false;
         }
         else {
             
             collisionX();
-            collisionY();
+            collisionBottom = collisionY();
             collisionBrique(lvl);
             collisionRaquette(raquette);
             trajectory(directionRight, directionUp);
@@ -157,8 +160,9 @@ public class Ball {
     }
     
     
-    private void collisionY() {
+    private boolean collisionY() {
         
+        boolean collisionBottom = false;
         int limitY = Gdx.graphics.getHeight() - this.texture.getHeight();
         
         if (limitY < y) {
@@ -168,11 +172,15 @@ public class Ball {
             
         } else if (y < 0.0f) {
             
-            y = 0.0f;
+            
             directionUp = true;
             
             // Rajouter la perte de vie ici (collision avec le bas de l'ecran)
+            collisionBottom = true;
+            
         }
+
+        return collisionBottom;
     }
     
     private void collisionX() {
@@ -209,5 +217,10 @@ public class Ball {
         }
         
         return gameStart;
+    }
+
+    public boolean getCollisionBottom() {
+
+        return collisionBottom;
     }
 }

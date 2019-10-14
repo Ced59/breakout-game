@@ -23,7 +23,8 @@ public class ListLevels {
         levels.add(level);
 
         level = new Level(4, 15);
-        level.create("HardRow", "HardRow", "HardRow", "HardRow", "HardRow","HardRow","HardRow","HardRow","HardRow","HardRow","HardRow","HardRow","HardRow","HardRow","HardRow");
+        level.create("HardRow", "HardRow", "HardRow", "HardRow", "HardRow","HardRow","HardRow","HardRow","HardRow","HardRow","HardRow",
+                     "HardRow","HardRow","HardRow","HardRow");
         levels.add(level);
     }
 
