@@ -67,6 +67,9 @@ public class GameScreen implements Screen {
                         player.lifeLost();
                         gameStart = false;
                         gameTestLostLife = false;
+                        if (player.getLife() == 0) {
+                                dispose();
+                        }
 
                 }
                 
@@ -114,6 +117,7 @@ public class GameScreen implements Screen {
         
         @Override
         public void dispose() {
-                // never called automatically
+                batch.dispose();
+                game.dispose();
         }
 }
