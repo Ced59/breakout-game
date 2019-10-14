@@ -67,31 +67,30 @@ public class Ball {
 
                    //On teste le coté de la brique entré en collision pour déterminer la nouvelle direction de la balle (en testant une collision avec un nouveau rectangle fictif décalé)
 
-                    if (!Intersector.overlaps(zone, brique.getTestCollisionBottomBrique())) {
+                    if (Intersector.overlaps(zone, brique.getTestCollisionBottomBrique())) {
 
                         directionUp = false;
                     }
 
-                    if (!Intersector.overlaps(zone, brique.getTestCollisionUpBrique())) {
+                    if (Intersector.overlaps(zone, brique.getTestCollisionUpBrique())) {
 
                         directionUp = true;
                     }
 
-                    if (!Intersector.overlaps(zone, brique.getTestCollisionLeftBrique())) {
-
-                        directionRight = true;
-                    }
-
-                    if (!Intersector.overlaps(zone, brique.getTestCollisionRightBrique())) {
+                    if (Intersector.overlaps(zone, brique.getTestCollisionLeftBrique())) {
 
                         directionRight = false;
+                    }
+
+                    if (Intersector.overlaps(zone, brique.getTestCollisionRightBrique())) {
+
+                        directionRight = true;
                     }
 
                     
 
                     brique.setDisplayedWhenCollide();
                     
-
                 }
             }
 

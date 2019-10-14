@@ -18,10 +18,10 @@ public class MediumBrique extends Brique {
         zone = new Rectangle(x, y , texture.getWidth(), texture.getHeight());
         power = 2;
 
-        testCollisionBottomBrique = new Rectangle(x, y + 10, zone.getWidth(), zone.getHeight());
-        testCollisionUpBrique = new Rectangle(x, y - 10, zone.getWidth(), zone.getHeight());
-        testCollisionLeftBrique = new Rectangle(x + 10, y, zone.getWidth(), zone.getHeight());
-        testCollisionRightBrique = new Rectangle(x, y - 10, zone.getWidth(), zone.getHeight());
+        testCollisionBottomBrique = new Rectangle(x, y - zone.getHeight(), zone.getWidth(), zone.getHeight());
+        testCollisionUpBrique = new Rectangle(x, y + zone.getHeight(), zone.getWidth(), zone.getHeight());
+        testCollisionLeftBrique = new Rectangle(x - zone.getHeight(), y, zone.getHeight(), zone.getHeight());
+        testCollisionRightBrique = new Rectangle(x + zone.getWidth(), y, zone.getHeight(), zone.getHeight());
     } 
 
     public void render(SpriteBatch batch) {
