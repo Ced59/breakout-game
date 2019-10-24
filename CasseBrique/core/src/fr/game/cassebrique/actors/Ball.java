@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
-import fr.game.cassebrique.actors.briques.Brique;
 import fr.game.cassebrique.actors.levels.Level;
 import fr.game.cassebrique.actors.levels.ressources.Row;
 
@@ -62,36 +61,39 @@ public class Ball {
 
         for (Row row : lvl.getLvlRows()) {
             
-            for (Brique brique : row.getRowBriques()) {
+            // for (Brique brique : row.getRowBriques()) {
+
+                for (int i = 0; i < row.getRowBriques().size(); i++) {
+                    
                 
-                boolean collision = Intersector.overlaps(zone, brique.getZone());
+                boolean collision = Intersector.overlaps(zone, row.getRowBriques().get(i).getZone());
 
                 if (collision) {
 
                    //On teste le coté de la brique entré en collision pour déterminer la nouvelle direction de la balle (en testant une collision avec un nouveau rectangle fictif décalé)
 
-                    if (Intersector.overlaps(zone, brique.getTestCollisionBottomBrique())) {
+                    if (Intersector.overlaps(zone, row.getRowBriques().get(i).getTestCollisionBottomBrique())) {
 
                         directionUp = false;
                     }
 
-                    if (Intersector.overlaps(zone, brique.getTestCollisionUpBrique())) {
+                    if (Intersector.overlaps(zone, row.getRowBriques().get(i).getTestCollisionUpBrique())) {
 
                         directionUp = true;
                     }
 
-                    if (Intersector.overlaps(zone, brique.getTestCollisionLeftBrique())) {
+                    if (Intersector.overlaps(zone, row.getRowBriques().get(i).getTestCollisionLeftBrique())) {
 
                         directionRight = false;
                     }
 
-                    if (Intersector.overlaps(zone, brique.getTestCollisionRightBrique())) {
+                    if (Intersector.overlaps(zone, row.getRowBriques().get(i).getTestCollisionRightBrique())) {
 
                         directionRight = true;
                     }
   
 
-                    brique.setDisplayedWhenCollide();
+                    row.getRowBriques().get(i).setDisplayedWhenCollide();
                     
                 }
             }

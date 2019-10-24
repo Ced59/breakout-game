@@ -4,76 +4,71 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import fr.game.cassebrique.actors.Player;
-import fr.game.cassebrique.actors.briques.Brique;
 import fr.game.cassebrique.actors.levels.ressources.Row;
 
-
 public class Level {
-    
+
     int lvlNumber;
     int rowsNbre;
     Row[] lvlRows;
     private BitmapFont font;
-    
-    
+
     public Level(int lvlNumber, int rowsNbre) {
-        
+
         this.lvlNumber = lvlNumber;
         this.rowsNbre = rowsNbre;
         lvlRows = new Row[rowsNbre];
         font = new BitmapFont();
-        
+
     }
-    
-    
+
     // A généraliser avec une methode aux nbre param indéfini ---> OK
     // A voir pour remplacer les String par enumerables
-    
+
     public void create(String... rowNames) {
-        
+
         for (int i = 0; i < rowNames.length; i++) {
-            
+
             switch (rowNames[i]) {
-                
-                case "HardRow":
+
+            case "HardRow":
                 lvlRows[i] = new Row(i);
                 lvlRows[i].createHardRow(i);
-                
+
                 break;
 
-                case "MediumRow":
+            case "MediumRow":
                 lvlRows[i] = new Row(i);
                 lvlRows[i].createMediumRow(i);
-                
+
                 break;
 
-                case "BasicRow":
+            case "BasicRow":
                 lvlRows[i] = new Row(i);
                 lvlRows[i].createBasicRow(i);
-                
+
                 break;
-                
-                default:
+
+            default:
                 break;
-                
-            }       
-            
+
+            }
+
         }
-        
+
     }
-    
-    
+
     public void render(SpriteBatch batch) {
-        
+
         for (Row row : lvlRows) {
-            
+
             row.render(batch);
         }
-        
+
         batch.begin();
         font.draw(batch, "Vous êtes au niveau " + this.lvlNumber, 10, 870);
         batch.end();
-        
+
     }
 
     public Row[] getLvlRows() {
@@ -86,10 +81,12 @@ public class Level {
         boolean win = true;
 
         for (Row row : this.lvlRows) {
-            
-            for (Brique brique : row.getRowBriques()) {
-                
-                if (brique.getDisplayed()) {
+
+            // for (Brique brique : row.getRowBriques()) {
+
+            for (int i = 0; i < row.getRowBriques().size(); i++) {
+
+                if (row.getRowBriques().get(i).getDisplayed()) {
 
                     win = false;
                 }

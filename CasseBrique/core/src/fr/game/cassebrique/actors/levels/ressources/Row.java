@@ -1,13 +1,17 @@
 package fr.game.cassebrique.actors.levels.ressources;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 
 import fr.game.cassebrique.actors.briques.*;
 
 public class Row {
     
     final int NB_BRIQUE = 17;
-    Brique[] rowBriques = new Brique[NB_BRIQUE];
+    private Map<Integer, Brique> rowBriques = new HashMap<>();
     int rowNumber;
     float y;
     float x;
@@ -23,10 +27,11 @@ public class Row {
     
     public void render(SpriteBatch batch) {
         
-        for (Brique var : rowBriques) {
+        for (int i = 0; i < rowBriques.size(); i++) {
             
-            var.render(batch);
+            rowBriques.get(i).render(batch);
         }
+
     }
     
     
@@ -36,7 +41,7 @@ public class Row {
     public void createBasicRow(int rowNumber) {
         
         for (int i = 0; i < NB_BRIQUE; i++) {
-            rowBriques[i] = new BasicBrique(x, y);
+            rowBriques.put(i, new BasicBrique(x, y));
             x += 52;
         }
         
@@ -45,7 +50,7 @@ public class Row {
     public void createMediumRow(int rowNumber) {
         
         for (int i = 0; i < NB_BRIQUE; i++) {
-            rowBriques[i] = new MediumBrique(x, y);
+            rowBriques.put(i, new MediumBrique(x, y));
             x += 52;
         }
     }
@@ -53,17 +58,15 @@ public class Row {
     public void createHardRow(int rowNumber) {
         
         for (int i = 0; i < NB_BRIQUE; i++) {
-            rowBriques[i] = new HardBrique(x, y);
+            rowBriques.put(i, new HardBrique(x, y));
             x += 52;
         }
     }
 
-    public Brique[] getRowBriques() {
+    public Map<Integer, Brique> getRowBriques() {
 
         return rowBriques;
     }
-
-
     // fin de la zone de refactorisation
 
 }
